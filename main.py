@@ -66,18 +66,15 @@ if st.button("Generate MP3"):
         client = OpenAI(api_key=api_key)
         tmp_path = Path(tempfile.gettempdir()) / "speech.mp3"
 
-        prompt_text = (
-            f"Read the following text in {language}. "
-            f"Ensure natural pronunciation and clarity.\n\n{final_text}"
-        )
+        prompt_text = final_text
+
 
         with client.audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
             voice=voice,
             input=prompt_text,
-            instructions="Speak in a clear, natural, human-like tone."
-            "Ignore and skip: Read the following text in {language}. "
-            "Ignore and skip: Ensure natural pronunciation and clarity.\n\n{final_text}"
+            instructions=
+            f"Speak in {language}.Use natural pronunciation and clarity.\n\n{final_text}"
         ) as response:
             response.stream_to_file(tmp_path)
 
